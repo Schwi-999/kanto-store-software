@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanto Store | El Primer Ecommerce Especializado en Pokémon TCG en Bolivia</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        pokeRed: {
+                            DEFAULT: '#EF4444',
+                            400: '#F87171',
+                            500: '#EF4444',
+                            600: '#DC2626',
+                            700: '#B91C1C',
+                        },
+                        pokeYellow: {
+                            DEFAULT: '#F59E0B',
+                            300: '#FDE047',
+                            400: '#FBBF24',
+                            500: '#F59E0B',
+                        },
+                        pokeDark: {
+                            DEFAULT: '#0B0F19',
+                            card: '#111827',
+                            surface: '#1E293B',
+                            border: '#334155',
+                        }
+                    },
+                    boxShadow: {
+                        'neon-red': '0 0 25px -5px rgba(239, 68, 68, 0.45)',
+                        'neon-amber': '0 0 25px -5px rgba(245, 158, 11, 0.45)',
+                        'card-glow': '0 10px 30px -10px rgba(0, 0, 0, 0.7)',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-10px) rotate(1deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E293B;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #EF4444;
+        }
+
+        /* Pokédex grid texture */
+        .pokedex-grid {
+            background-image: radial-gradient(rgba(239, 68, 68, 0.08) 1px, transparent 1px), radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+            background-position: 0 0, 16px 16px;
+        }
+
+        /* Holographic card shimmer effect */
+        .holo-card-sheen {
+            position: relative;
+            overflow: hidden;
+        }
+        .holo-card-sheen::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                115deg,
+                transparent 20%,
+                rgba(255, 255, 255, 0.08) 35%,
+                rgba(245, 158, 11, 0.15) 45%,
+                rgba(239, 68, 68, 0.15) 55%,
+                rgba(59, 130, 246, 0.15) 65%,
+                transparent 80%
+            );
+            transform: rotate(-25deg) translateY(-100%);
+            transition: transform 0.75s ease;
+            pointer-events: none;
+        }
+        .holo-card-sheen:hover::after {
+            transform: rotate(-25deg) translateY(100%);
+        }
+
+        /* 3D tilt perspective container */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+    </style>
+</head>
+<body class="bg-[#070A12] text-slate-100 font-sans antialiased selection:bg-red-600 selection:text-white">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-red-950 via-slate-900 to-amber-950 border-b border-red-900/30 text-xs py-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+            <div class="flex items-center gap-2 text-slate-300">
+                <span class="inline-flex items-center justify-center bg-red-600/30 text-red-400 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase border border-red-500/30">
+                    🇧🇴 BOLIVIA
+                </span>
+                <span>Envíos protegidos a La Paz, Santa Cruz, Cochabamba y todo el país por compras mayores a 350 Bs.</span>
+            </div>
+            <div class="flex items-center gap-4 text-slate-400 text-[11px]">
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Pagos con QR Simple activos</span>
+                <span class="hidden md:inline text-slate-600">|</span>
+                <a href="https://wa.me/59170000000?text=Hola%20Kanto%20Store,%20tengo%20una%20consulta%20sobre%20cartas%20Pokémon%20TCG" target="_blank" class="hover:text-amber-400 transition flex items-center gap-1">
+                    <span>💬 WhatsApp Soporte: (+591) 700-00000</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-[#0B0F19]/90 backdrop-blur-xl border-b border-slate-800/80 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="relative w-11 h-11 bg-gradient-to-b from-red-600 to-red-700 rounded-full border-2 border-white/90 flex items-center justify-center font-bold text-white shadow-neon-red group-hover:scale-105 transition-transform duration-300">
+                    <!-- Pokeball design -->
+                    <div class="absolute inset-x-0 h-[3px] bg-slate-900 top-1/2 -translate-y-1/2"></div>
+                    <div class="relative z-10 w-4 h-4 bg-white rounded-full border-2 border-slate-900 flex items-center justify-center">
+                        <div class="w-1.5 h-1.5 bg-red-600 rounded-full animate-ping"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl font-black tracking-wider text-white">KANTO <span class="text-red-500">STORE</span></span>
+                        <span class="bg-amber-400/10 text-amber-400 text-[10px] font-bold px-1.5 py-0.5 rounded border border-amber-400/30 uppercase tracking-widest hidden sm:inline-block">TCG</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400 -mt-1 tracking-wider uppercase font-semibold">Bolivia Card Market</p>
+                </div>
+            </a>
+
+            <!-- Navigation Links (Desktop) -->
+            <nav class="hidden lg:flex items-center space-x-7 text-sm font-semibold text-slate-300">
+                <a href="#catalogo" class="hover:text-red-400 transition-colors flex items-center gap-1.5">
+                    <span>Cartas Singles</span>
+                    <span class="bg-red-500/20 text-red-400 text-[10px] px-1.5 py-0.2 rounded-full font-bold">Hot</span>
+                </a>
+                <a href="#sellados" class="hover:text-red-400 transition-colors">Productos Sellados</a>
+                <a href="#caracteristicas" class="hover:text-red-400 transition-colors">Garantía de Estado</a>
+                <a href="#comparativa" class="hover:text-red-400 transition-colors">¿Por qué Kanto?</a>
+                <a href="#pagos" class="hover:text-red-400 transition-colors">Métodos de Pago</a>
+            </nav>
+
+            <!-- Action Buttons (Wishlist, Cart, Mobile Menu) -->
+            <div class="flex items-center space-x-3">
+                <!-- Search Trigger Button -->
+                <button onclick="focusSearchInput()" title="Buscar cartas" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </button>
+
+                <!-- Wishlist Button -->
+                <button onclick="toggleWishlistDrawer()" class="relative p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-red-400 hover:border-red-500/40 transition group" title="Lista de Deseos">
+                    <svg class="w-5 h-5 group-hover:fill-red-500/20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    <span id="wishlist-count" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-900">0</span>
+                </button>
+
+                <!-- Cart Button -->
+                <button onclick="toggleCartDrawer()" class="relative flex items-center gap-2.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold px-4 py-2.5 rounded-xl transition shadow-neon-red">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    <span class="hidden sm:inline text-sm">Carrito</span>
+                    <span id="cart-count" class="bg-white text-red-600 text-xs font-black px-2 py-0.5 rounded-full shadow-inner">0</span>
+                </button>
+
+                <!-- Mobile Hamburger Toggle -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white" aria-label="Abrir menú">
+                    <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-slate-900/98 border-b border-slate-800 px-6 py-6 transition-all duration-300">
+            <nav class="flex flex-col space-y-4 text-base font-semibold text-slate-200">
+                <a href="#catalogo" onclick="toggleMobileMenu()" class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-800 text-red-400">
+                    <span>🎴 Catálogo Singles</span>
+                    <span class="text-xs bg-red-600/20 px-2 py-0.5 rounded text-red-400">Verificado</span>
+                </a>
+                <a href="#sellados" onclick="toggleMobileMenu()" class="p-2 rounded-lg hover:bg-slate-800">📦 Productos Sellados</a>
+                <a href="#caracteristicas" onclick="toggleMobileMenu()" class="p-2 rounded-lg hover:bg-slate-800">🔍 Verificación de Estado</a>
+                <a href="#comparativa" onclick="toggleMobileMenu()" class="p-2 rounded-lg hover:bg-slate-800">⚖️ Kanto vs. Redes Sociales</a>
+                <a href="#pagos" onclick="toggleMobileMenu()" class="p-2 rounded-lg hover:bg-slate-800">💳 Métodos de Pago (QR Simple)</a>
+                <div class="pt-4 border-t border-slate-800 flex flex-col gap-3">
+                    <button onclick="toggleWishlistDrawer(); toggleMobileMenu();" class="w-full py-2.5 bg-slate-800 text-white rounded-xl font-bold flex items-center justify-center gap-2">
+                        ❤️ Ver Lista de Deseos (<span id="mobile-wishlist-count">0</span>)
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-12 pb-24 lg:pt-20 lg:pb-32 overflow-hidden pokedex-grid border-b border-slate-800/60">
+        <!-- Ambient Glowing Orbs -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-red-600/15 rounded-full blur-[140px] pointer-events-none"></div>
+        <div class="absolute top-1/3 right-10 w-[350px] h-[350px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Column: Copy & CTAs -->
+                <div class="lg:col-span-7 text-center lg:text-left">
+                    <!-- Pill Tag -->
+                    <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-red-500/30 px-4 py-2 rounded-full mb-6 shadow-sm">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+                        <span class="text-xs font-bold text-red-400 tracking-wide uppercase">El Ecommerce #1 de Pokémon TCG en Bolivia</span>
+                    </div>
+
+                    <!-- Main Headline -->
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.12] mb-6">
+                        Colecciona con la certeza de saber el <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-amber-400 to-yellow-300">estado exacto</span> de cada carta.
+                    </h1>
+
+                    <!-- Subtitle -->
+                    <p class="text-base sm:text-lg text-slate-300/90 max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed font-normal">
+                        Catálogo especializado de <strong>cartas individuales (singles)</strong> por expansión y rareza, más productos sellados oficiales. Cada carta cuenta con fotos reales en alta resolución y clasificación transparente <span class="text-emerald-400 font-semibold">(Gem Mint, Near Mint, Lightly Played)</span> para coleccionistas y jugadores en Bolivia.
+                    </p>
+
+                    <!-- CTAs -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
+                        <a href="#catalogo" class="w-full sm:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-extrabold px-8 py-4 rounded-2xl transition shadow-neon-red flex items-center justify-center gap-3 group">
+                            <span>Explorar Catálogo Singles</span>
+                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                        <button onclick="toggleWishlistDrawer()" class="w-full sm:w-auto bg-slate-900/90 hover:bg-slate-800 border border-slate-700 hover:border-amber-400/50 text-slate-200 font-bold px-7 py-4 rounded-2xl transition flex items-center justify-center gap-2.5">
+                            <span class="text-red-400">❤️</span>
+                            <span>Mi Lista de Deseos</span>
+                        </button>
+                    </div>
+
+                    <!-- Trust Micro-Badges -->
+                    <div class="grid grid-cols-3 gap-3 pt-6 border-t border-slate-800/90 text-left max-w-xl mx-auto lg:mx-0">
+                        <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-xl">
+                            <div class="text-red-500 font-black text-sm sm:text-base">100% Original</div>
+                            <div class="text-slate-400 text-xs">Cero cartas proxy o copias</div>
+                        </div>
+                        <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-xl">
+                            <div class="text-emerald-400 font-black text-sm sm:text-base">Fotos Reales</div>
+                            <div class="text-slate-400 text-xs">Grading transparente 1:1</div>
+                        </div>
+                        <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-xl">
+                            <div class="text-amber-400 font-black text-sm sm:text-base">QR Simple</div>
+                            <div class="text-slate-400 text-xs">Pago en Bs. sin comisiones</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Holographic Featured Card -->
+                <div class="lg:col-span-5 flex justify-center perspective-1000">
+                    <div id="hero-card" class="relative w-full max-w-sm bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-950 p-5 rounded-3xl border border-red-500/40 shadow-card-glow animate-float transition-transform duration-300">
+                        
+                        <!-- Top status in card -->
+                        <div class="flex items-center justify-between mb-3 text-xs">
+                            <span class="flex items-center gap-1.5 font-bold text-amber-400">
+                                <span>🔥</span> Top Carta Más Buscada
+                            </span>
+                            <span class="bg-emerald-500/20 text-emerald-300 font-bold px-2.5 py-1 rounded-full border border-emerald-500/30">
+                                Near Mint (NM)
+                            </span>
+                        </div>
+
+                        <!-- Card Visual Container with Shimmer -->
+                        <div class="relative bg-gradient-to-b from-slate-950 to-slate-900 rounded-2xl p-3 border border-slate-800 holo-card-sheen mb-4 flex flex-col items-center">
+                            <!-- Card Image (Charizard ex Special Illustration Rare) -->
+                            <img src="https://images.pokemontcg.io/sv3pt5/199_hires.png" 
+                                 alt="Charizard ex 199/165 Pokémon 151" 
+                                 class="w-full h-80 object-contain drop-shadow-2xl rounded-xl transition duration-500 hover:scale-[1.03]"
+                                 onerror="this.onerror=null; this.src='https://images.pokemontcg.io/sv3/125_hires.png';">
+                            
+                            <!-- Floater: Authenticated badge -->
+                            <div class="absolute bottom-4 left-4 bg-slate-950/90 backdrop-blur-md border border-amber-400/50 text-amber-300 text-[11px] font-black px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg">
+                                <span>⚡</span> Autenticada Kanto ID #006
+                            </div>
+                        </div>
+
+                        <!-- Card Information -->
+                        <div>
+                            <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+                                <span class="uppercase tracking-wider font-semibold text-amber-400">Escarlata y Púrpura: 151</span>
+                                <span class="font-mono text-slate-400">#199/165 • SAR</span>
+                            </div>
+                            <h3 class="text-2xl font-black text-white mb-2">Charizard ex (Alt Art)</h3>
+                            <p class="text-xs text-slate-400 mb-4 line-clamp-2">
+                                Special Illustration Rare con arte completo holográfico. Centrado 9.5/10, esquinas nítidas sin whitening.
+                            </p>
+
+                            <!-- Price and Quick Add -->
+                            <div class="flex items-center justify-between pt-3 border-t border-slate-800">
+                                <div>
+                                    <span class="text-[11px] text-slate-400 uppercase font-bold block">Precio de Lista</span>
+                                    <span class="text-2xl font-black text-white">620 <span class="text-red-500 text-lg">Bs.</span></span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="quickViewCard(1)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-2.5 rounded-xl border border-slate-700 transition" title="Ver detalles y fotos de esquinas">
+                                        👁️
+                                    </button>
+                                    <button onclick="addToCart(1)" class="bg-red-600 hover:bg-red-500 text-white font-bold px-4 py-2.5 rounded-xl transition shadow-neon-red text-sm flex items-center gap-1.5">
+                                        <span>+ Carrito</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Ticker / Stats Bar -->
+    <div class="bg-slate-900/80 border-b border-slate-800 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="border-r border-slate-800/80 last:border-none">
+                    <div class="text-2xl sm:text-3xl font-black text-white">+1,200</div>
+                    <div class="text-xs sm:text-sm text-slate-400 font-medium">Cartas Singles en Stock</div>
+                </div>
+                <div class="border-r border-slate-800/80 last:border-none">
+                    <div class="text-2xl sm:text-3xl font-black text-emerald-400">100%</div>
+                    <div class="text-xs sm:text-sm text-slate-400 font-medium">Originales y Verificadas</div>
+                </div>
+                <div class="border-r border-slate-800/80 last:border-none">
+                    <div class="text-2xl sm:text-3xl font-black text-amber-400">9 Deptos.</div>
+                    <div class="text-xs sm:text-sm text-slate-400 font-medium">Cobertura Nacional en Bolivia</div>
+                </div>
+                <div>
+                    <div class="text-2xl sm:text-3xl font-black text-red-500">0 Sorpresas</div>
+                    <div class="text-xs sm:text-sm text-slate-400 font-medium">Grading y Fotos Reales</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section (4 Core Pillars) -->
+    <section id="caracteristicas" class="py-24 bg-gradient-to-b from-[#070A12] to-slate-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-500/10 border border-red-500/20 px-3.5 py-1.5 rounded-full">
+                    Pilares de Kanto Store
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-black text-white mt-4 mb-4 tracking-tight">
+                    Una experiencia diseñada exclusivamente para coleccionistas bolivianos
+                </h2>
+                <p class="text-slate-400 text-base">
+                    Olvídate del regateo inseguro en grupos de Facebook o de comprar cartas dañadas disfrazadas de "como nuevas".
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Feature 1: Singles Catalog -->
+                <div class="bg-slate-900/60 border border-slate-800/80 hover:border-red-500/50 p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-red-500/10 text-red-500 rounded-2xl flex items-center justify-center text-2xl font-black mb-5 border border-red-500/20 group-hover:bg-red-600 group-hover:text-white transition">
+                        🎴
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2.5">Cartas Singles por Set y Rareza</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        Catálogo indexado por expansiones (151, Paldea Evolved, Crown Zenith, Base Set Vintage) y rarezas (SAR, Ultra Raras, Illustration Rares).
+                    </p>
+                    <a href="#catalogo" class="text-red-400 font-semibold text-xs inline-flex items-center gap-1 hover:text-red-300">
+                        Explorar cartas singles &rarr;
+                    </a>
+                </div>
+
+                <!-- Feature 2: Sealed Products -->
+                <div id="sellados" class="bg-slate-900/60 border border-slate-800/80 hover:border-amber-500/50 p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-amber-500/10 text-amber-400 rounded-2xl flex items-center justify-center text-2xl font-black mb-5 border border-amber-500/20 group-hover:bg-amber-500 group-hover:text-slate-950 transition">
+                        📦
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2.5">Productos Sellados de Fábrica</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        Booster Boxes oficiales, Elite Trainer Boxes (ETB), Sobres individuales y Mazos de Combate listos para competir en torneos oficiales.
+                    </p>
+                    <a href="#catalogo" onclick="filterCategory('sellados')" class="text-amber-400 font-semibold text-xs inline-flex items-center gap-1 hover:text-amber-300">
+                        Ver cajas selladas &rarr;
+                    </a>
+                </div>
+
+                <!-- Feature 3: Condition Verification -->
+                <div class="bg-slate-900/60 border border-slate-800/80 hover:border-emerald-500/50 p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-2xl font-black mb-5 border border-emerald-500/20 group-hover:bg-emerald-500 group-hover:text-slate-950 transition">
+                        🔍
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2.5">Verificación de Estado Rigurosa</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        Escala estricta adaptada a estándares internacionales: Mint, Near Mint, Lightly Played. Inspeccionamos centrado, esquinas y bordes.
+                    </p>
+                    <button onclick="openGradingModal()" class="text-emerald-400 font-semibold text-xs inline-flex items-center gap-1 hover:text-emerald-300">
+                        Consultar guía de estados &rarr;
+                    </button>
+                </div>
+
+                <!-- Feature 4: Local Payments -->
+                <div class="bg-slate-900/60 border border-slate-800/80 hover:border-blue-500/50 p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1 group">
+                    <div class="w-14 h-14 bg-blue-500/10 text-blue-400 rounded-2xl flex items-center justify-center text-2xl font-black mb-5 border border-blue-500/20 group-hover:bg-blue-500 group-hover:text-white transition">
+                        📱
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2.5">Pagos Locales en Bolivianos</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        Paga al instante con QR Simple desde cualquier banco en Bolivia (BCP, BNB, Banco Unión, Mercantil) o coordina pago contra entrega.
+                    </p>
+                    <a href="#pagos" class="text-blue-400 font-semibold text-xs inline-flex items-center gap-1 hover:text-blue-300">
+                        Ver bancos y opciones &rarr;
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalog Showcase / Featured Cards Section -->
+    <section id="catalogo" class="py-20 bg-slate-950 border-t border-slate-800/80 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            
+            <!-- Section Header -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                        <span class="text-xs font-bold text-red-500 uppercase tracking-widest">Catálogo Disponible</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white">Cartas Destacadas & Sellados</h2>
+                    <p class="text-slate-400 text-sm sm:text-base mt-1">Explora singles codiciadas, productos sellados y agrega directamente a tu carrito.</p>
+                </div>
+
+                <!-- Live Search Box -->
+                <div class="w-full md:w-80">
+                    <div class="relative">
+                        <input id="catalog-search" 
+                               type="text" 
+                               onkeyup="handleSearch(this.value)" 
+                               placeholder="Buscar carta (ej. Charizard, Pikachu, ETB)..." 
+                               class="w-full bg-slate-900 border border-slate-800 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none transition pl-10">
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-slate-800/80">
+                <!-- Category Pills -->
+                <div class="flex flex-wrap gap-2" id="category-filters">
+                    <button onclick="filterCategory('all')" data-cat="all" class="filter-btn active bg-red-600 text-white font-bold text-xs px-4 py-2 rounded-xl transition">
+                        Todos (8)
+                    </button>
+                    <button onclick="filterCategory('singles')" data-cat="singles" class="filter-btn bg-slate-900 hover:bg-slate-800 text-slate-300 font-semibold text-xs px-4 py-2 rounded-xl border border-slate-800 transition">
+                        🎴 Singles
+                    </button>
+                    <button onclick="filterCategory('sellados')" data-cat="sellados" class="filter-btn bg-slate-900 hover:bg-slate-800 text-slate-300 font-semibold text-xs px-4 py-2 rounded-xl border border-slate-800 transition">
+                        📦 Sellados
+                    </button>
+                    <button onclick="filterCategory('raras')" data-cat="raras" class="filter-btn bg-slate-900 hover:bg-slate-800 text-slate-300 font-semibold text-xs px-4 py-2 rounded-xl border border-slate-800 transition">
+                        ✨ Secret / SAR
+                    </button>
+                </div>
+
+                <!-- Sort Dropdown -->
+                <div class="flex items-center gap-2 text-xs text-slate-400">
+                    <span>Ordenar por:</span>
+                    <select id="sort-select" onchange="sortCatalog(this.value)" class="bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-lg px-3 py-1.5 focus:border-red-500 outline-none">
+                        <option value="featured">Destacados</option>
+                        <option value="price-asc">Precio: Menor a Mayor</option>
+                        <option value="price-desc">Precio: Mayor a Menor</option>
+                        <option value="name">Nombre: A - Z</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Product Cards Grid -->
+            <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Dynamically populated via JavaScript for instant interactivity -->
+            </div>
+
+            <!-- Empty State if no cards match search -->
+            <div id="no-results" class="hidden text-center py-16">
+                <div class="text-5xl mb-4">🔍</div>
+                <h3 class="text-xl font-bold text-white mb-2">No encontramos cartas que coincidan</h3>
+                <p class="text-slate-400 text-sm mb-6">Prueba con otro nombre de Pokémon, expansión o limpia los filtros.</p>
+                <button onclick="resetFilters()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition">
+                    Restablecer filtros
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Condition Grading Guide Showcase Section -->
+    <section class="py-20 bg-slate-900/60 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="bg-gradient-to-r from-slate-900 via-[#0E1526] to-slate-900 border border-slate-800 p-8 sm:p-12 rounded-3xl relative overflow-hidden">
+                <div class="grid lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-7">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full">
+                            Transparencia Total
+                        </span>
+                        <h3 class="text-2xl sm:text-3xl font-black text-white mt-4 mb-3">
+                            ¿Cómo calificamos el estado de cada carta en Kanto Store?
+                        </h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            Utilizamos una escala basada en las directrices de grading internacional (PSA y TCGPlayer), adaptada para que sepas con exactitud qué estás comprando antes de pagar:
+                        </p>
+                        <div class="grid sm:grid-cols-3 gap-3 mb-6">
+                            <div class="bg-slate-950/70 border border-emerald-500/30 p-3 rounded-xl">
+                                <span class="text-emerald-400 font-black text-xs block">MINT (M)</span>
+                                <span class="text-slate-400 text-[11px]">Directo de sobre a sleeve. Centrado óptimo, sin rayones ni whitening.</span>
+                            </div>
+                            <div class="bg-slate-950/70 border border-teal-500/30 p-3 rounded-xl">
+                                <span class="text-teal-400 font-black text-xs block">NEAR MINT (NM)</span>
+                                <span class="text-slate-400 text-[11px]">Micro-detalle casi imperceptible solo visible con lupa especializada.</span>
+                            </div>
+                            <div class="bg-slate-950/70 border border-amber-500/30 p-3 rounded-xl">
+                                <span class="text-amber-400 font-black text-xs block">PLAYED (LP/MP)</span>
+                                <span class="text-slate-400 text-[11px]">Leve desgaste en bordes. Ideal para jugar torneos con costo reducido.</span>
+                            </div>
+                        </div>
+                        <button onclick="openGradingModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-xl text-sm transition shadow-lg shadow-emerald-600/20 inline-flex items-center gap-2">
+                            <span>Abrir Guía Visual de Grading Completa</span>
+                            <span>📖</span>
+                        </button>
+                    </div>
+                    <div class="lg:col-span-5 flex justify-center">
+                        <div class="bg-slate-950 border border-slate-800 p-6 rounded-2xl max-w-sm w-full text-center">
+                            <div class="w-16 h-16 bg-red-600/10 border border-red-500/30 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+                                🛡️
+                            </div>
+                            <h4 class="font-bold text-white text-base mb-1">Empaque "Collector Shield"</h4>
+                            <p class="text-slate-400 text-xs mb-4">
+                                Toda carta de más de 50 Bs. viaja con: <strong>Perfect Fit Sleeve + Toploader Rígido Ultra-Pro + Cartón reforzado contra flexión + Sobre acolchado impermeable</strong>.
+                            </p>
+                            <div class="text-[11px] text-amber-400 bg-amber-400/10 py-1.5 px-3 rounded-lg border border-amber-400/20 font-semibold">
+                                Cero cartas dobladas durante el viaje
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem vs. Solution & Comparison Section -->
+    <section id="comparativa" class="py-24 bg-slate-950 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-bold text-red-500 uppercase tracking-widest bg-red-500/10 border border-red-500/20 px-3.5 py-1.5 rounded-full">
+                    La Solución Kanto Store
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-black text-white mt-4 mb-4">
+                    Comprar en redes sociales vs. Comprar en Kanto Store
+                </h2>
+                <p class="text-slate-400 text-base">
+                    Comparamos la realidad cotidiana del mercado informal boliviano frente al estándar que creamos para ti.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto mb-20">
+                
+                <!-- The Old Way: Social Media & WhatsApp groups -->
+                <div class="bg-slate-900/40 border border-red-950/60 p-8 rounded-3xl relative">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-red-500/10 text-red-400 flex items-center justify-center font-black text-xl">
+                            ❌
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black text-white">Comprar en Grupos de FB / WhatsApp</h3>
+                            <p class="text-xs text-red-400 font-semibold">El problema habitual en Bolivia</p>
+                        </div>
+                    </div>
+
+                    <ul class="space-y-4 text-sm text-slate-400">
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-black text-base">✕</span>
+                            <span><strong>Fotos oscuras y desenfocadas:</strong> No puedes distinguir rayones, manchas de holofoil o bordes desgastados.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-black text-base">✕</span>
+                            <span><strong>Riesgo de cartas falsas:</strong> Copias chinas de AliExpress vendidas a precio de original sin filtro técnico.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-black text-base">✕</span>
+                            <span><strong>Transferencias a ciegas:</strong> Desconoces si el vendedor enviará el paquete o si desaparecerá tras recibir el QR.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-black text-base">✕</span>
+                            <span><strong>Empaques deplorables:</strong> Cartas enviadas en servilletas o sobres simples que llegan dobladas por la flota.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- The Kanto Store Way -->
+                <div class="bg-gradient-to-b from-slate-900 to-slate-900/90 border border-emerald-500/40 p-8 rounded-3xl relative shadow-card-glow">
+                    <div class="absolute -top-3 right-6 bg-emerald-500 text-slate-950 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
+                        Recomendado
+                    </div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-black text-xl">
+                            ✅
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black text-white">Comprar en Kanto Store</h3>
+                            <p class="text-xs text-emerald-400 font-semibold">Garantía, seriedad y tranquilidad</p>
+                        </div>
+                    </div>
+
+                    <ul class="space-y-4 text-sm text-slate-300">
+                        <li class="flex items-start gap-3">
+                            <span class="text-emerald-400 font-black text-base">✓</span>
+                            <span><strong>Fotos reales 1:1 en 4K:</strong> Desglose minucioso de cada carta (centrado, bordes, esquinas y superficie).</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-emerald-400 font-black text-base">✓</span>
+                            <span><strong>Autenticidad 100% Verificada:</strong> Certificamos textura de relieve, peso, grosor y micro-capa de luz.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-emerald-400 font-black text-base">✓</span>
+                            <span><strong>Comprobante oficial & QR Simple:</strong> Trazabilidad del pedido con código de seguimiento en WhatsApp.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-emerald-400 font-black text-base">✓</span>
+                            <span><strong>Protección Collector Shield:</strong> Toploader rígido + refuerzo de cartón + sobre de burbujas blindado.</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Testimonials Grid -->
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-10">
+                    <h3 class="text-2xl font-bold text-white">Lo que dicen los entrenadores en Bolivia</h3>
+                    <p class="text-slate-400 text-sm mt-1">Coleccionistas y jugadores que confiaron en Kanto Store</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Testimonial 1 -->
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex text-amber-400 text-sm mb-3">★★★★★</div>
+                            <p class="text-slate-300 text-sm italic mb-4">
+                                "Compré el Charizard ex SAR de 151 con envío a Sopocachi (La Paz). Llegó al día siguiente en toploader sellado, impecable. Al fin una tienda donde no te engañan con el estado de la carta."
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-4 border-t border-slate-800">
+                            <div class="w-10 h-10 rounded-full bg-red-600/20 text-red-400 flex items-center justify-center font-bold">SM</div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Sebastián Morales</h4>
+                                <span class="text-[11px] text-slate-400">Coleccionista • La Paz</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex text-amber-400 text-sm mb-3">★★★★★</div>
+                            <p class="text-slate-300 text-sm italic mb-4">
+                                "Armé el playset para mi mazo competitivo de Roaring Moon. Los precios en Bolivianos son justos, pagué con QR Simple en 30 segundos y el despacho a Santa Cruz fue súper rápido."
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-4 border-t border-slate-800">
+                            <div class="w-10 h-10 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold">RV</div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Rodrigo Valenzuela</h4>
+                                <span class="text-[11px] text-slate-400">Jugador de Liga TCG • Santa Cruz</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex text-amber-400 text-sm mb-3">★★★★★</div>
+                            <p class="text-slate-300 text-sm italic mb-4">
+                                "Pedí la ETB sellada de 151 para Cochabamba. La caja vino sin ningún rasguño y con el plástico original intacto. Me encanta la sección de Wishlist para guardar lo que voy a comprar después."
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-4 border-t border-slate-800">
+                            <div class="w-10 h-10 rounded-full bg-emerald-600/20 text-emerald-400 flex items-center justify-center font-bold">VC</div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Valeria Camacho</h4>
+                                <span class="text-[11px] text-slate-400">Coleccionista • Cochabamba</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Payment Methods Section (Bolivia Specific) -->
+    <section id="pagos" class="py-20 bg-gradient-to-b from-slate-950 to-slate-900 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center max-w-2xl mx-auto mb-14">
+                <span class="text-xs font-bold text-amber-400 uppercase tracking-widest bg-amber-400/10 border border-amber-400/20 px-3.5 py-1.5 rounded-full">
+                    Flexibilidad y Seguridad
+                </span>
+                <h2 class="text-3xl font-black text-white mt-4 mb-2">Métodos de Pago Aceptados en Bolivia</h2>
+                <p class="text-slate-400 text-sm">Paga en moneda nacional (Bs.) sin comisiones ocultas ni cambios de divisas.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
+                <!-- QR Simple -->
+                <div class="bg-slate-900 border border-slate-800 hover:border-amber-400/50 p-6 rounded-2xl text-center transition">
+                    <div class="w-14 h-14 bg-amber-500/10 text-amber-400 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 border border-amber-400/20">
+                        📱
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">QR Simple Interoperable</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                        Escanea desde cualquier banca móvil: BCP, Banco Nacional de Bolivia (BNB), Banco Unión, Mercantil Santa Cruz, Banco FIE, Banco Sol.
+                    </p>
+                    <span class="inline-block bg-emerald-500/10 text-emerald-400 text-[11px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/20">
+                        Sin costo adicional • Acreditación en 1 min
+                    </span>
+                </div>
+
+                <!-- Transferencia Bancaria -->
+                <div class="bg-slate-900 border border-slate-800 hover:border-red-500/50 p-6 rounded-2xl text-center transition">
+                    <div class="w-14 h-14 bg-red-500/10 text-red-400 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 border border-red-500/20">
+                        🏦
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Transferencia Bancaria</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                        Cuentas habilitadas en BNB y BCP en Bolivianos. Envías el comprobante en PDF por WhatsApp y procesamos tu despacho inmediato.
+                    </p>
+                    <span class="inline-block bg-slate-800 text-slate-300 text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-700">
+                        Cuentas empresariales en Bs.
+                    </span>
+                </div>
+
+                <!-- Pago Contra Entrega -->
+                <div class="bg-slate-900 border border-slate-800 hover:border-blue-500/50 p-6 rounded-2xl text-center transition">
+                    <div class="w-14 h-14 bg-blue-500/10 text-blue-400 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 border border-blue-500/20">
+                        💵
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Pago Contra Entrega</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                        Disponible para retiros personales en puntos coordinados en La Paz (Sopocachi, San Miguel) y entregas coordinadas en Santa Cruz.
+                    </p>
+                    <span class="inline-block bg-blue-500/10 text-blue-400 text-[11px] font-bold px-2.5 py-1 rounded-full border border-blue-500/20">
+                        Inspeccionas antes de pagar
+                    </span>
+                </div>
+            </div>
+
+            <!-- Fast QR Demo CTA -->
+            <div class="text-center">
+                <button onclick="openQRModal()" class="bg-slate-900 hover:bg-slate-800 border border-amber-400/40 text-amber-300 font-bold px-6 py-3 rounded-xl text-sm transition inline-flex items-center gap-2">
+                    <span>Ver Ejemplo de Pago QR Simple</span>
+                    <span>📲</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#05070D] border-t border-slate-900 text-slate-400 text-sm pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
+                
+                <!-- Col 1: Brand Info -->
+                <div class="lg:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-9 h-9 bg-red-600 rounded-full border-2 border-white flex items-center justify-center font-bold text-white shadow-neon-red">
+                            <div class="w-3 h-3 bg-white rounded-full border border-slate-900"></div>
+                        </div>
+                        <span class="text-2xl font-black tracking-wider text-white">KANTO <span class="text-red-500">STORE</span></span>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed max-w-sm mb-6">
+                        La primera plataforma ecommerce especializada en Pokémon Trading Card Game en Bolivia. Singles certificadas con grading transparente, cajas selladas y entrega garantizada a todo el país.
+                    </p>
+                    <div class="flex items-center gap-3 text-slate-400">
+                        <a href="#" class="w-9 h-9 bg-slate-900 rounded-lg flex items-center justify-center hover:bg-red-600 hover:text-white transition">FB</a>
+                        <a href="#" class="w-9 h-9 bg-slate-900 rounded-lg flex items-center justify-center hover:bg-red-600 hover:text-white transition">IG</a>
+                        <a href="https://wa.me/59170000000" target="_blank" class="w-9 h-9 bg-slate-900 rounded-lg flex items-center justify-center hover:bg-emerald-600 hover:text-white transition">WA</a>
+                        <a href="#" class="w-9 h-9 bg-slate-900 rounded-lg flex items-center justify-center hover:bg-red-600 hover:text-white transition">DC</a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Singles Categories -->
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4 uppercase tracking-wider">Catálogo Singles</h4>
+                    <ul class="space-y-2.5 text-xs text-slate-400">
+                        <li><a href="#catalogo" onclick="filterCategory('raras')" class="hover:text-red-400 transition">Special Illustration Rares</a></li>
+                        <li><a href="#catalogo" class="hover:text-red-400 transition">Escarlata y Púrpura: 151</a></li>
+                        <li><a href="#catalogo" class="hover:text-red-400 transition">Obsidiana en Llamas</a></li>
+                        <li><a href="#catalogo" class="hover:text-red-400 transition">Crown Zenith Galarian</a></li>
+                        <li><a href="#catalogo" class="hover:text-red-400 transition">Cartas Vintage WOTC</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Customer Care & Shipping -->
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4 uppercase tracking-wider">Ayuda & Envíos</h4>
+                    <ul class="space-y-2.5 text-xs text-slate-400">
+                        <li><button onclick="openGradingModal()" class="hover:text-red-400 transition text-left">Guía de Estado (Grading)</button></li>
+                        <li><a href="#comparativa" class="hover:text-red-400 transition">Empaque Collector Shield</a></li>
+                        <li><a href="#pagos" class="hover:text-red-400 transition">Pagos con QR Simple</a></li>
+                        <li><a href="#pagos" class="hover:text-red-400 transition">Envíos por Flota y Courier</a></li>
+                        <li><a href="https://wa.me/59170000000" target="_blank" class="hover:text-red-400 transition">Atención en WhatsApp</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Newsletter / Restock Alerts -->
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4 uppercase tracking-wider">Alertas de Restock</h4>
+                    <p class="text-xs text-slate-400 mb-3">Recibe notificaciones cuando ingresen nuevas singles raras o cajas 151.</p>
+                    <form onsubmit="handleNewsletter(event)" class="space-y-2">
+                        <input type="email" required placeholder="Tu correo electrónico..." class="w-full bg-slate-900 border border-slate-800 text-xs px-3 py-2.5 rounded-lg text-slate-200 outline-none focus:border-red-500">
+                        <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold text-xs py-2 rounded-lg transition">
+                            Suscribirme a Alertas
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Accepted Payments Banner -->
+            <div class="py-6 border-y border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+                <div class="flex items-center gap-3">
+                    <span class="text-slate-400 font-bold">Bancos & Pasarelas:</span>
+                    <span class="bg-slate-900 px-2.5 py-1 rounded text-slate-300 border border-slate-800">QR Simple</span>
+                    <span class="bg-slate-900 px-2.5 py-1 rounded text-slate-300 border border-slate-800">BNB</span>
+                    <span class="bg-slate-900 px-2.5 py-1 rounded text-slate-300 border border-slate-800">BCP</span>
+                    <span class="bg-slate-900 px-2.5 py-1 rounded text-slate-300 border border-slate-800">Banco Unión</span>
+                </div>
+                <div class="text-slate-400">
+                    Envíos a los 9 departamentos de Bolivia 🇧🇴
+                </div>
+            </div>
+
+            <!-- Legal & Academic Notice -->
+            <div class="pt-8 text-center space-y-3">
+                <p class="text-slate-400 font-bold text-xs">
+                    Kanto Store &copy; 2026 — Proyecto Académico de Ecommerce TCG
+                </p>
+                <p class="text-[11px] text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                    <strong>Aviso Legal y de Fines Educativos:</strong> Este sitio web es un proyecto universitario/académico desarrollado con el propósito de investigar e implementar arquitecturas modernas de comercio electrónico especializado (Frontend interactivo con Tailwind CSS, backend transaccional y pagos locales). Pokémon, los nombres de los personajes, cartas coleccionables, Pokémon TCG y logos asociados son marcas comerciales y derechos reservados de <em>Nintendo, Creatures Inc. y Game Freak Inc.</em> No existe afiliación comercial directa ni cesión de derechos por parte de The Pokémon Company International.
+                </p>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- ==================== INTERACTIVE MODALS & DRAWERS ==================== -->
+
+    <!-- 1. Slide-Over Cart Drawer -->
+    <div id="cart-drawer-overlay" onclick="toggleCartDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-slate-950 border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+        
+        <!-- Drawer Header -->
+        <div class="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-red-600/20 text-red-500 flex items-center justify-center font-bold">🛒</div>
+                <div>
+                    <h3 class="text-lg font-black text-white">Carrito de Entrenador</h3>
+                    <p class="text-xs text-slate-400"><span id="drawer-items-count">0</span> productos agregados</p>
+                </div>
+            </div>
+            <button onclick="toggleCartDrawer()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition">
+                ✕
+            </button>
+        </div>
+
+        <!-- Drawer Body: Items list -->
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <!-- Dynamically populated or empty message -->
+        </div>
+
+        <!-- Drawer Footer: Totals and Checkout -->
+        <div class="p-6 border-t border-slate-800 bg-slate-900/90 space-y-4">
+            <div class="space-y-1.5 text-xs">
+                <div class="flex justify-between text-slate-400">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal" class="font-bold text-slate-200">0 Bs.</span>
+                </div>
+                <div class="flex justify-between text-slate-400">
+                    <span>Envío estimado (Bolivia)</span>
+                    <span id="cart-shipping" class="text-emerald-400 font-semibold">Gratis (&gt;350 Bs.)</span>
+                </div>
+                <div class="flex justify-between text-base font-black text-white pt-2 border-t border-slate-800">
+                    <span>Total a Pagar</span>
+                    <span id="cart-total" class="text-red-500 text-lg">0 Bs.</span>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <button onclick="checkoutViaWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 text-sm">
+                    <span>💬 Completar Pedido por WhatsApp</span>
+                </button>
+                <button onclick="openQRModalFromCart()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold py-3 rounded-xl border border-amber-400/30 transition flex items-center justify-center gap-2 text-sm">
+                    <span>📲 Pagar con QR Simple</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Slide-Over Wishlist Drawer -->
+    <div id="wishlist-drawer-overlay" onclick="toggleWishlistDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+    <div id="wishlist-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-slate-950 border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+        
+        <div class="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">❤️</div>
+                <div>
+                    <h3 class="text-lg font-black text-white">Tu Lista de Deseos (Wishlist)</h3>
+                    <p class="text-xs text-slate-400">Guarda cartas para tu próxima compra</p>
+                </div>
+            </div>
+            <button onclick="toggleWishlistDrawer()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition">
+                ✕
+            </button>
+        </div>
+
+        <div id="wishlist-items-container" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <!-- Dynamically populated -->
+        </div>
+
+        <div class="p-6 border-t border-slate-800 bg-slate-900/90">
+            <button onclick="moveAllWishlistToCart()" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl transition text-sm">
+                Pasar Todo al Carrito
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. Quick View Modal (Card Inspection) -->
+    <div id="quickview-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 max-w-2xl w-full rounded-3xl overflow-hidden shadow-2xl relative">
+            <button onclick="closeQuickView()" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center">
+                ✕
+            </button>
+
+            <div id="quickview-content" class="p-6 sm:p-8">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Condition Grading Guide Modal -->
+    <div id="grading-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 max-w-3xl w-full rounded-3xl overflow-hidden shadow-2xl relative max-h-[90vh] flex flex-col">
+            <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Estándar Kanto Store</span>
+                    <h3 class="text-xl font-black text-white">Guía Oficial de Calificación y Estados</h3>
+                </div>
+                <button onclick="closeGradingModal()" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+                    ✕
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-6 text-sm">
+                <!-- Gem Mint 10 -->
+                <div class="bg-slate-950 border border-emerald-500/40 p-4 rounded-2xl">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-black text-emerald-400 text-base">Gem Mint / Mint (GM / M - 10)</span>
+                        <span class="bg-emerald-500/20 text-emerald-300 text-xs px-2.5 py-0.5 rounded-full font-bold">Estado Perfecto</span>
+                    </div>
+                    <p class="text-slate-300 text-xs leading-relaxed">
+                        Carta impecable recién extraída del paquete directo a sleeve protector. Centrado de 55/45 o mejor en anverso. Cero arañazos en la superficie holográfica y bordes perfectamente cortados sin whitening ni muescas.
+                    </p>
+                </div>
+
+                <!-- Near Mint -->
+                <div class="bg-slate-950 border border-teal-500/40 p-4 rounded-2xl">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-black text-teal-400 text-base">Near Mint (NM - 8 a 9)</span>
+                        <span class="bg-teal-500/20 text-teal-300 text-xs px-2.5 py-0.5 rounded-full font-bold">Excelente Colección</span>
+                    </div>
+                    <p class="text-slate-300 text-xs leading-relaxed">
+                        A simple vista luce idéntica a una carta nueva. Puede presentar un único micro-punto de whitening en un borde posterior o leve desviación de centrado de fábrica. Es el estándar predilecto para coleccionistas de binder.
+                    </p>
+                </div>
+
+                <!-- Lightly Played -->
+                <div class="bg-slate-950 border border-amber-500/40 p-4 rounded-2xl">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-black text-amber-400 text-base">Lightly Played (LP - 6 a 7)</span>
+                        <span class="bg-amber-500/20 text-amber-300 text-xs px-2.5 py-0.5 rounded-full font-bold">Juego Competitivo</span>
+                    </div>
+                    <p class="text-slate-300 text-xs leading-relaxed">
+                        Muestra leve desgaste en esquinas o bordes posteriores debido a haber sido barajada con fundas. No tiene pliegues, arrugas ni roturas. Ideal para jugadores de torneos que buscan cartas competitivas a mejor precio.
+                    </p>
+                </div>
+
+                <!-- Moderately Played -->
+                <div class="bg-slate-950 border border-orange-500/40 p-4 rounded-2xl">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-black text-orange-400 text-base">Moderately Played (MP - 4 a 5)</span>
+                        <span class="bg-orange-500/20 text-orange-300 text-xs px-2.5 py-0.5 rounded-full font-bold">Desgaste Visible</span>
+                    </div>
+                    <p class="text-slate-300 text-xs leading-relaxed">
+                        Desgaste evidente en bordes o leve desgaste de superficie sin comprometer la integridad estructural de la carta.
+                    </p>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-800 bg-slate-950 text-center">
+                <button onclick="closeGradingModal()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition">
+                    Entendido, volver a la tienda
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. QR Payment Modal -->
+    <div id="qr-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-amber-400/40 max-w-md w-full rounded-3xl overflow-hidden shadow-2xl relative text-center p-6">
+            <button onclick="closeQRModal()" class="absolute top-4 right-4 w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+                ✕
+            </button>
+
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-widest bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">
+                QR Simple Bolivia
+            </span>
+            <h3 class="text-xl font-black text-white mt-3 mb-1">Pago Inmediato con QR</h3>
+            <p class="text-xs text-slate-400 mb-4">Válido para cualquier aplicación bancaria nacional (BCP, BNB, Banco Unión, Mercantil, etc.)</p>
+
+            <!-- QR Code Simulation Box -->
+            <div class="bg-white p-4 rounded-2xl max-w-[220px] mx-auto shadow-inner mb-4 flex flex-col items-center justify-center">
+                <!-- SVG QR Code Vector -->
+                <svg class="w-48 h-48" viewBox="0 0 100 100" fill="none">
+                    <rect width="100" height="100" fill="white"/>
+                    <!-- Corner 1 -->
+                    <rect x="5" y="5" width="26" height="26" fill="#0F172A"/>
+                    <rect x="9" y="9" width="18" height="18" fill="white"/>
+                    <rect x="13" y="13" width="10" height="10" fill="#EF4444"/>
+                    <!-- Corner 2 -->
+                    <rect x="69" y="5" width="26" height="26" fill="#0F172A"/>
+                    <rect x="73" y="9" width="18" height="18" fill="white"/>
+                    <rect x="77" y="13" width="10" height="10" fill="#EF4444"/>
+                    <!-- Corner 3 -->
+                    <rect x="5" y="69" width="26" height="26" fill="#0F172A"/>
+                    <rect x="9" y="73" width="18" height="18" fill="white"/>
+                    <rect x="13" y="77" width="10" height="10" fill="#EF4444"/>
+                    <!-- Data points -->
+                    <rect x="36" y="10" width="5" height="5" fill="#0F172A"/>
+                    <rect x="46" y="10" width="5" height="5" fill="#0F172A"/>
+                    <rect x="56" y="10" width="5" height="5" fill="#0F172A"/>
+                    <rect x="36" y="20" width="5" height="5" fill="#0F172A"/>
+                    <rect x="46" y="25" width="5" height="5" fill="#EF4444"/>
+                    <rect x="56" y="20" width="5" height="5" fill="#0F172A"/>
+                    <!-- Center Pokeball emblem -->
+                    <circle cx="50" cy="50" r="14" fill="#0F172A"/>
+                    <circle cx="50" cy="50" r="12" fill="#EF4444"/>
+                    <path d="M 38 50 L 62 50" stroke="#0F172A" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="4" fill="white" stroke="#0F172A" stroke-width="2"/>
+                    <!-- Bottom data -->
+                    <rect x="36" y="70" width="5" height="5" fill="#0F172A"/>
+                    <rect x="46" y="75" width="5" height="5" fill="#0F172A"/>
+                    <rect x="56" y="70" width="5" height="5" fill="#0F172A"/>
+                    <rect x="69" y="69" width="8" height="8" fill="#0F172A"/>
+                    <rect x="82" y="69" width="12" height="6" fill="#0F172A"/>
+                    <rect x="75" y="80" width="18" height="14" fill="#0F172A"/>
+                </svg>
+                <span class="text-[10px] text-slate-800 font-black uppercase mt-1 tracking-wider">KANTO STORE TCG BOLIVIA</span>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs mb-4">
+                <div class="flex justify-between text-slate-400 mb-1">
+                    <span>Monto a Transferir:</span>
+                    <span id="qr-amount" class="text-white font-bold text-sm">350 Bs.</span>
+                </div>
+                <div class="flex justify-between text-slate-400">
+                    <span>Glosa Sugerida:</span>
+                    <span class="text-amber-400 font-mono">KANTO-PEDIDO</span>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <a href="https://wa.me/59170000000?text=Hola%20Kanto%20Store,%20acabo%20de%20escanear%20el%20QR%20Simple%20para%20mi%20pedido" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-xs block">
+                    Enviar Comprobante por WhatsApp
+                </a>
+                <button onclick="closeQRModal()" class="w-full bg-slate-800 text-slate-300 font-semibold py-2 rounded-xl text-xs hover:bg-slate-700 transition">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Floating Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-900 border border-red-500/50 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <span id="toast-icon" class="text-xl">✅</span>
+        <div>
+            <div id="toast-title" class="font-bold text-sm">Notificación</div>
+            <div id="toast-msg" class="text-xs text-slate-300">Mensaje de acción</div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT STATE & LOGIC ==================== -->
+    <script>
+        // Database of Pokémon TCG Products
+        const productsData = [
+            {
+                id: 1,
+                name: "Charizard ex (Alt Art SAR)",
+                set: "Escarlata y Púrpura: 151",
+                cardNumber: "199/165",
+                rarity: "Special Illustration Rare",
+                category: "singles",
+                isRare: true,
+                condition: "Near Mint (NM)",
+                conditionColor: "emerald",
+                price: 620,
+                image: "https://images.pokemontcg.io/sv3pt5/199_hires.png",
+                description: "Carta de Charizard ex con arte alternativo completo de Escarlata y Púrpura 151. Centrado 9.5/10, sin imperfecciones de esquinas.",
+                details: {
+                    centering: "9.5/10",
+                    corners: "10/10",
+                    edges: "9.5/10",
+                    surface: "10/10",
+                    language: "Español",
+                    stock: 2
+                }
+            },
+            {
+                id: 2,
+                name: "Pikachu IR (Illustration Rare)",
+                set: "Crown Zenith: Galarian Gallery",
+                cardNumber: "GG30/GG70",
+                rarity: "Illustration Rare",
+                category: "singles",
+                isRare: true,
+                condition: "Mint (M)",
+                conditionColor: "emerald",
+                price: 195,
+                image: "https://images.pokemontcg.io/swsh12pt5gg/GG30_hires.png",
+                description: "Pikachu de Crown Zenith rodeado de amigos en el bosque. Estado de sobre directo a toploader.",
+                details: {
+                    centering: "10/10",
+                    corners: "10/10",
+                    edges: "10/10",
+                    surface: "10/10",
+                    language: "Inglés",
+                    stock: 3
+                }
+            },
+            {
+                id: 3,
+                name: "Umbreon VMAX (Alternate Art)",
+                set: "Evolving Skies",
+                cardNumber: "215/203",
+                rarity: "Secret Rare (Moonbreon)",
+                category: "singles",
+                isRare: true,
+                condition: "Near Mint (NM)",
+                conditionColor: "emerald",
+                price: 890,
+                image: "https://images.pokemontcg.io/swsh7/215_hires.png",
+                description: "El codiciado 'Moonbreon' alcanzando la luna. Relieve holográfico impecable, verificado con microscopio.",
+                details: {
+                    centering: "9.5/10",
+                    corners: "9.5/10",
+                    edges: "9.5/10",
+                    surface: "10/10",
+                    language: "Inglés",
+                    stock: 1
+                }
+            },
+            {
+                id: 4,
+                name: "Blastoise ex (SAR)",
+                set: "Escarlata y Púrpura: 151",
+                cardNumber: "200/165",
+                rarity: "Special Illustration Rare",
+                category: "singles",
+                isRare: true,
+                condition: "Near Mint (NM)",
+                conditionColor: "emerald",
+                price: 320,
+                image: "https://images.pokemontcg.io/sv3pt5/200_hires.png",
+                description: "Blastoise nadando en las profundidades del océano. Textura ultra definida sin rayones.",
+                details: {
+                    centering: "9.5/10",
+                    corners: "10/10",
+                    edges: "9.5/10",
+                    surface: "10/10",
+                    language: "Español",
+                    stock: 2
+                }
+            },
+            {
+                id: 5,
+                name: "Mew ex (Special Illustration)",
+                set: "Paldean Fates / 151",
+                cardNumber: "205/091",
+                rarity: "Special Illustration Rare",
+                category: "singles",
+                isRare: true,
+                condition: "Mint (M)",
+                conditionColor: "emerald",
+                price: 340,
+                image: "https://images.pokemontcg.io/sv3pt5/151_hires.png",
+                description: "Mew ex con arte alternativo psicodélico. Estado impecable salido de paquete.",
+                details: {
+                    centering: "10/10",
+                    corners: "10/10",
+                    edges: "10/10",
+                    surface: "10/10",
+                    language: "Inglés",
+                    stock: 2
+                }
+            },
+            {
+                id: 6,
+                name: "Iono (e-Nigma) Full Art Trainer",
+                set: "Paldea Evolved",
+                cardNumber: "269/193",
+                rarity: "Ultra Rare Supporter",
+                category: "singles",
+                isRare: false,
+                condition: "Near Mint (NM)",
+                conditionColor: "emerald",
+                price: 210,
+                image: "https://images.pokemontcg.io/sv2/269_hires.png",
+                description: "La streamer líder de gimnasio Iono. Pieza fundamental para mazos competitivos del formato estándar.",
+                details: {
+                    centering: "9.5/10",
+                    corners: "10/10",
+                    edges: "9.5/10",
+                    surface: "10/10",
+                    language: "Español",
+                    stock: 4
+                }
+            },
+            {
+                id: 7,
+                name: "Elite Trainer Box (ETB) 151",
+                set: "Escarlata y Púrpura: 151",
+                cardNumber: "Caja Sellada",
+                rarity: "Producto Oficial Sellado",
+                category: "sellados",
+                isRare: false,
+                condition: "Sellado de Fábrica (Sealed)",
+                conditionColor: "purple",
+                price: 480,
+                image: "https://images.pokemontcg.io/sv3pt5/logo.png",
+                isProductSealed: true,
+                description: "Incluye 9 sobres de 151, carta promo de Snorlax con ilustración exclusiva, 65 fundas protectoras y accesorios.",
+                details: {
+                    centering: "Sellado Original",
+                    corners: "Caja Intacta",
+                    edges: "Plástico Termosellado",
+                    surface: "100% Oficial",
+                    language: "Español / Inglés",
+                    stock: 5
+                }
+            },
+            {
+                id: 8,
+                name: "Booster Bundle (6 Sobres) 151",
+                set: "Escarlata y Púrpura: 151",
+                cardNumber: "Paquete Sellado",
+                rarity: "Producto Oficial Sellado",
+                category: "sellados",
+                isRare: false,
+                condition: "Sellado de Fábrica (Sealed)",
+                conditionColor: "purple",
+                price: 210,
+                image: "https://images.pokemontcg.io/sv3pt5/symbol.png",
+                isProductSealed: true,
+                description: "Caja con 6 paquetes de mejora de la codiciada expansión 151. Ideal para abrir sobres y cazar cartas raras.",
+                details: {
+                    centering: "Sellado Original",
+                    corners: "Caja Intacta",
+                    edges: "Termosellado",
+                    surface: "100% Oficial",
+                    language: "Español",
+                    stock: 6
+                }
+            }
+        ];
+
+        // State Management
+        let cart = [];
+        let wishlist = [];
+        let currentCategory = 'all';
+        let searchQuery = '';
+        let currentSort = 'featured';
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCatalog();
+            updateCartUI();
+            updateWishlistUI();
+            init3DTilt();
+        });
+
+        // Render Catalog Cards
+        function renderCatalog() {
+            const grid = document.getElementById('catalog-grid');
+            const noResults = document.getElementById('no-results');
+            
+            let filtered = productsData.filter(item => {
+                const matchesCategory = 
+                    currentCategory === 'all' ? true :
+                    currentCategory === 'singles' ? item.category === 'singles' :
+                    currentCategory === 'sellados' ? item.category === 'sellados' :
+                    currentCategory === 'raras' ? item.isRare : true;
+
+                const matchesSearch = 
+                    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    item.set.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    item.rarity.toLowerCase().includes(searchQuery.toLowerCase());
+
+                return matchesCategory && matchesSearch;
+            });
+
+            // Sorting logic
+            if (currentSort === 'price-asc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (currentSort === 'price-desc') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (currentSort === 'name') {
+                filtered.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            grid.innerHTML = filtered.map(product => {
+                const isWishlisted = wishlist.includes(product.id);
+                const isConditionMint = product.condition.includes('Mint');
+                const isSealed = product.category === 'sellados';
+
+                const badgeBg = isSealed 
+                    ? 'bg-purple-500/20 text-purple-300 border-purple-500/30' 
+                    : isConditionMint 
+                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' 
+                    : 'bg-teal-500/20 text-teal-300 border-teal-500/30';
+
+                return `
+                <div class="bg-slate-900/90 border border-slate-800 rounded-2xl overflow-hidden p-4 hover:border-slate-700 hover:shadow-card-glow transition duration-300 flex flex-col justify-between group">
+                    <div>
+                        <!-- Image Container with Badges -->
+                        <div class="bg-slate-950 h-64 rounded-xl mb-4 relative flex items-center justify-center p-3 border border-slate-800/80 holo-card-sheen overflow-hidden">
+                            <!-- Condition Badge -->
+                            <span class="absolute top-2.5 right-2.5 ${badgeBg} text-[10px] px-2.5 py-1 rounded-full font-bold border z-10 backdrop-blur-sm">
+                                ${product.condition}
+                            </span>
+
+                            <!-- Wishlist Toggle Button -->
+                            <button onclick="toggleWishlistItem(${product.id})" class="absolute top-2.5 left-2.5 z-10 w-8 h-8 rounded-full bg-slate-900/80 border border-slate-700 flex items-center justify-center hover:scale-110 transition ${isWishlisted ? 'text-red-500 fill-red-500' : 'text-slate-400'}">
+                                ${isWishlisted ? '❤️' : '🤍'}
+                            </button>
+
+                            <!-- Card/Product Image -->
+                            <img src="${product.image}" 
+                                 alt="${product.name}" 
+                                 class="max-h-full max-w-full object-contain drop-shadow-lg group-hover:scale-105 transition-transform duration-300"
+                                 onerror="this.onerror=null; this.src='https://images.pokemontcg.io/sv3pt5/symbol.png';">
+                        </div>
+
+                        <!-- Product Set & Number -->
+                        <div class="flex items-center justify-between text-[11px] mb-1">
+                            <span class="text-amber-400 font-bold uppercase tracking-wider truncate mr-2">${product.set}</span>
+                            <span class="text-slate-400 font-mono text-[10px]">${product.cardNumber}</span>
+                        </div>
+
+                        <!-- Product Title -->
+                        <h3 class="text-base font-bold text-white group-hover:text-red-400 transition-colors line-clamp-1 mb-1">
+                            ${product.name}
+                        </h3>
+
+                        <!-- Rarity Text -->
+                        <div class="text-[11px] text-slate-400 mb-3 flex items-center gap-1">
+                            <span>✨ ${product.rarity}</span>
+                        </div>
+                    </div>
+
+                    <!-- Price & Actions Footer -->
+                    <div class="pt-3 border-t border-slate-800/90 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-slate-400 block font-semibold">PRECIO</span>
+                            <span class="text-xl font-black text-white">${product.price} <span class="text-red-500 text-sm">Bs.</span></span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="quickViewCard(${product.id})" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition" title="Vista Rápida y Ficha de Estado">
+                                👁️
+                            </button>
+                            <button onclick="addToCart(${product.id})" class="bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-2 rounded-xl text-xs transition shadow-neon-red flex items-center gap-1">
+                                <span>+</span> Carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // Search Filter
+        function handleSearch(val) {
+            searchQuery = val;
+            renderCatalog();
+        }
+
+        function focusSearchInput() {
+            const input = document.getElementById('catalog-search');
+            input.focus();
+            window.location.hash = '#catalogo';
+        }
+
+        // Category Filter
+        function filterCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('#category-filters .filter-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = 'filter-btn active bg-red-600 text-white font-bold text-xs px-4 py-2 rounded-xl transition';
+                } else {
+                    btn.className = 'filter-btn bg-slate-900 hover:bg-slate-800 text-slate-300 font-semibold text-xs px-4 py-2 rounded-xl border border-slate-800 transition';
+                }
+            });
+            renderCatalog();
+        }
+
+        // Sort Catalog
+        function sortCatalog(val) {
+            currentSort = val;
+            renderCatalog();
+        }
+
+        function resetFilters() {
+            searchQuery = '';
+            document.getElementById('catalog-search').value = '';
+            filterCategory('all');
+        }
+
+        // Cart Actions
+        function addToCart(productId) {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            showToast('🛒 Agregado al Carrito', `${product.name} fue añadido correctamente.`);
+        }
+
+        function updateCartQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.id !== productId);
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+            const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+            const shipping = subtotal === 0 ? 0 : subtotal >= 350 ? 0 : 25;
+            const total = subtotal + shipping;
+
+            document.getElementById('cart-count').innerText = totalCount;
+            document.getElementById('drawer-items-count').innerText = totalCount;
+            document.getElementById('cart-subtotal').innerText = `${subtotal} Bs.`;
+            document.getElementById('cart-shipping').innerText = shipping === 0 ? (subtotal === 0 ? '0 Bs.' : 'Gratis (Promoción)') : `${shipping} Bs.`;
+            document.getElementById('cart-total').innerText = `${total} Bs.`;
+
+            const container = document.getElementById('cart-items-container');
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-slate-400">
+                        <div class="text-4xl mb-3">🎒</div>
+                        <h4 class="font-bold text-white text-base mb-1">Tu mochila de entrenador está vacía</h4>
+                        <p class="text-xs mb-4">Aún no has agregado cartas singles ni productos sellados.</p>
+                        <button onclick="toggleCartDrawer(); window.location.hash='#catalogo';" class="bg-red-600 hover:bg-red-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition">
+                            Explorar Catálogo
+                        </button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = cart.map(item => `
+                    <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl flex items-center justify-between gap-3">
+                        <img src="${item.image}" alt="${item.name}" class="w-12 h-16 object-contain rounded bg-slate-950 p-1 border border-slate-800">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-bold text-white truncate">${item.name}</h4>
+                            <span class="text-[10px] text-amber-400 block">${item.set}</span>
+                            <span class="text-xs font-extrabold text-white">${item.price} Bs.</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center border border-slate-800 rounded-lg bg-slate-950">
+                                <button onclick="updateCartQuantity(${item.id}, -1)" class="px-2 py-0.5 text-xs text-slate-400 hover:text-white">-</button>
+                                <span class="px-1.5 text-xs font-bold text-white">${item.quantity}</span>
+                                <button onclick="updateCartQuantity(${item.id}, 1)" class="px-2 py-0.5 text-xs text-slate-400 hover:text-white">+</button>
+                            </div>
+                            <button onclick="removeFromCart(${item.id})" class="text-slate-500 hover:text-red-400 text-xs p-1" title="Eliminar">
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-drawer-overlay');
+            const isOpen = !drawer.classList.contains('translate-x-full');
+
+            if (isOpen) {
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                drawer.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+            }
+        }
+
+        // Wishlist Actions
+        function toggleWishlistItem(productId) {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+
+            const index = wishlist.indexOf(productId);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showToast('💔 Eliminado', `${product.name} fue quitado de tu wishlist.`);
+            } else {
+                wishlist.push(productId);
+                showToast('❤️ Guardado en Wishlist', `${product.name} fue agregado a tu lista.`);
+            }
+
+            updateWishlistUI();
+            renderCatalog();
+        }
+
+        function updateWishlistUI() {
+            document.getElementById('wishlist-count').innerText = wishlist.length;
+            const mobileCount = document.getElementById('mobile-wishlist-count');
+            if (mobileCount) mobileCount.innerText = wishlist.length;
+
+            const container = document.getElementById('wishlist-items-container');
+            const wishlistedProducts = productsData.filter(p => wishlist.includes(p.id));
+
+            if (wishlistedProducts.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-slate-400">
+                        <div class="text-4xl mb-3">🤍</div>
+                        <h4 class="font-bold text-white text-base mb-1">Tu lista de deseos está vacía</h4>
+                        <p class="text-xs">Guarda las cartas que buscas para no perderles la pista.</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = wishlistedProducts.map(item => `
+                    <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl flex items-center justify-between gap-3">
+                        <img src="${item.image}" alt="${item.name}" class="w-12 h-16 object-contain rounded bg-slate-950 p-1 border border-slate-800">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-bold text-white truncate">${item.name}</h4>
+                            <span class="text-[10px] text-amber-400 block">${item.condition}</span>
+                            <span class="text-xs font-extrabold text-white">${item.price} Bs.</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="addToCart(${item.id})" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg">
+                                + Carrito
+                            </button>
+                            <button onclick="toggleWishlistItem(${item.id})" class="text-slate-500 hover:text-red-400 text-xs p-1">
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleWishlistDrawer() {
+            const drawer = document.getElementById('wishlist-drawer');
+            const overlay = document.getElementById('wishlist-drawer-overlay');
+            const isOpen = !drawer.classList.contains('translate-x-full');
+
+            if (isOpen) {
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                drawer.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+            }
+        }
+
+        function moveAllWishlistToCart() {
+            if (wishlist.length === 0) {
+                showToast('Información', 'Tu wishlist está vacía');
+                return;
+            }
+            wishlist.forEach(id => {
+                addToCart(id);
+            });
+            wishlist = [];
+            updateWishlistUI();
+            renderCatalog();
+            toggleWishlistDrawer();
+            toggleCartDrawer();
+            showToast('✅ Éxito', 'Todas las cartas fueron transferidas al carrito.');
+        }
+
+        // Quick View Modal
+        function quickViewCard(productId) {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+
+            const content = document.getElementById('quickview-content');
+            content.innerHTML = `
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex items-center justify-center relative holo-card-sheen">
+                        <span class="absolute top-3 right-3 bg-emerald-500/20 text-emerald-300 text-xs px-2.5 py-1 rounded-full font-bold border border-emerald-500/30">
+                            ${product.condition}
+                        </span>
+                        <img src="${product.image}" alt="${product.name}" class="max-h-80 object-contain drop-shadow-2xl">
+                    </div>
+
+                    <div>
+                        <div class="text-xs text-amber-400 font-bold uppercase mb-1">${product.set} • ${product.cardNumber}</div>
+                        <h3 class="text-2xl font-black text-white mb-1">${product.name}</h3>
+                        <p class="text-xs text-red-400 font-semibold mb-3">Rareza: ${product.rarity}</p>
+                        <p class="text-xs text-slate-300 mb-4 leading-relaxed">${product.description}</p>
+
+                        <!-- Inspection Breakdown -->
+                        <div class="bg-slate-950/80 border border-slate-800 p-3.5 rounded-xl mb-4 text-xs space-y-1.5">
+                            <div class="font-bold text-slate-200 text-xs mb-1">📐 Reporte de Inspección Kanto:</div>
+                            <div class="flex justify-between text-slate-400"><span>Centrado (Centering):</span> <strong class="text-slate-200">${product.details.centering}</strong></div>
+                            <div class="flex justify-between text-slate-400"><span>Esquinas (Corners):</span> <strong class="text-slate-200">${product.details.corners}</strong></div>
+                            <div class="flex justify-between text-slate-400"><span>Bordes (Edges):</span> <strong class="text-slate-200">${product.details.edges}</strong></div>
+                            <div class="flex justify-between text-slate-400"><span>Superficie (Surface):</span> <strong class="text-slate-200">${product.details.surface}</strong></div>
+                            <div class="flex justify-between text-slate-400"><span>Idioma:</span> <strong class="text-slate-200">${product.details.language}</strong></div>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-800">
+                            <div>
+                                <span class="text-[10px] text-slate-400 block font-bold">PRECIO</span>
+                                <span class="text-2xl font-black text-white">${product.price} <span class="text-red-500 text-base">Bs.</span></span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="toggleWishlistItem(${product.id})" class="p-2.5 rounded-xl bg-slate-800 text-slate-200 hover:text-red-400 border border-slate-700 transition">
+                                    ❤️
+                                </button>
+                                <button onclick="addToCart(${product.id}); closeQuickView();" class="bg-red-600 hover:bg-red-500 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-neon-red">
+                                    + Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const modal = document.getElementById('quickview-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeQuickView() {
+            const modal = document.getElementById('quickview-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Grading Guide Modal
+        function openGradingModal() {
+            const modal = document.getElementById('grading-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeGradingModal() {
+            const modal = document.getElementById('grading-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // QR Payment Modal
+        function openQRModal(amount) {
+            const amt = amount || 350;
+            document.getElementById('qr-amount').innerText = `${amt} Bs.`;
+            const modal = document.getElementById('qr-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function openQRModalFromCart() {
+            const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+            const shipping = subtotal >= 350 ? 0 : 25;
+            const total = subtotal + shipping;
+            if (total === 0) {
+                showToast('Aviso', 'Tu carrito está vacío.');
+                return;
+            }
+            toggleCartDrawer();
+            openQRModal(total);
+        }
+
+        function closeQRModal() {
+            const modal = document.getElementById('qr-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // WhatsApp Checkout
+        function checkoutViaWhatsApp() {
+            if (cart.length === 0) {
+                showToast('Aviso', 'Agrega cartas a tu carrito para finalizar el pedido.');
+                return;
+            }
+
+            const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+            const shipping = subtotal >= 350 ? 0 : 25;
+            const total = subtotal + shipping;
+
+            let itemsList = cart.map(i => `• ${i.quantity}x ${i.name} (${i.condition}) - ${i.price * i.quantity} Bs.`).join('%0A');
+
+            const message = `¡Hola Kanto Store Bolivia! 🎴%0AQuiero confirmar el siguiente pedido:%0A%0A${itemsList}%0A%0A*Total a Pagar:* ${total} Bs. (Envío: ${shipping === 0 ? 'Gratis' : '25 Bs.'})%0A*Método de Pago Preferido:* QR Simple%0A*Ciudad:* (La Paz / SCZ / CBBA / Otro)%0A%0A¿Me confirman disponibilidad para realizar la transferencia?`;
+
+            window.open(`https://wa.me/59170000000?text=${message}`, '_blank');
+        }
+
+        // Toast Feedback
+        function showToast(title, msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-msg').innerText = msg;
+
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Newsletter handler
+        function handleNewsletter(e) {
+            e.preventDefault();
+            showToast('📩 ¡Suscripción Exitosa!', 'Te notificaremos cuando lleguen nuevas expansiones a Bolivia.');
+            e.target.reset();
+        }
+
+        // 3D Card Tilt Effect on Hero
+        function init3DTilt() {
+            const card = document.getElementById('hero-card');
+            if (!card) return;
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -12;
+                const rotateY = ((x - centerX) / centerX) * 12;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+        }
+    </script>
+</body>
+</html>
